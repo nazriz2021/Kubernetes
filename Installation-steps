@@ -24,16 +24,18 @@ On Master node only :
 [sudo vim /etc/docker/daemon.json
 
 {
-  "exec-opts": ["native.c=systemd"]
+    "exec-opts": ["native.cgroupdriver=systemd"]
 }
 
 sudo systemctl daemon-reload
-sudo systemctl restart kubelet.service
-sudo kubeadm init --ignore-preflight-errors=all]
+sudo systemctl restart docker
+sudo systemctl restart kubelet or sudo systemctl restart kubelet.service
+sudo kubeadm init --ignore-preflight-errors=all
 
 11) mkdir -p $HOME/.kube
 12) sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 13) sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
 14) kubectl get nodes
 15) kubectl get pods --all-namespaces 
 [The first two coreDns pods will be in pending. Coredns -- > It is a dns server which can serve as a K8s cluster DNS. 
