@@ -37,7 +37,7 @@ sudo kubeadm init --ignore-preflight-errors=all]
 14) kubectl get nodes
 15) kubectl get pods --all-namespaces 
 [The first two coreDns pods will be in pending. Coredns -- > It is a dns server which can serve as a K8s cluster DNS. 
-To make it up and running we should create a pod network(pod network is use for pod-to-pod communication)]
+To make it up and running we should create a pod network (pod network is use for pod-to-pod communication)]
 16) kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
 17) kubectl get pods --all-namespaces
  [Now the coredns would be running]
@@ -47,10 +47,29 @@ To make it up and running we should create a pod network(pod network is use for 
 ---------------------
 On Slave nodes only :
 ---------------------
-[ Use the kubeadm join command ouput from your master kubeadm init command output . DO NOT USE BELOW COMMAND AS IT IS or if you want to create a token use the
-command sudo kubeadm token create --print-join-command]
+[Use the kubeadm join command ouput from your master kubeadm init command output . DO NOT USE BELOW COMMAND AS IT IS or if you want to create a token use the
+below command in Master node]
 
-19) sudo kubeadm join 192.168.100.6:6443 --token 06tl4c.oqn35jzecidg0r0m --discovery-token-ca-cert-hash sha256:c40f5fa0aba6ba311efcdb0e8cb637ae0eb8ce27b7a03d47be6d966142f2204c
+sudo kubeadm token create --print-join-command
+
+19) Copy the result of above command and paste it in worker node. 
+sudo kubeadm join 192.168.100.6:6443 --token 06tl4c.oqn35jzecidg0r0m --discovery-token-ca-cert-hash sha256:c40f5fa0aba6ba311efcdb0e8cb637ae0eb8ce27b7a03d47be6d966142f2204c
+
+If you get error as "[kubelet-check] It seems like the kubelet isn't running or healthy." Follow below steps
+
+I faced similar issue recently. The problem was cgroup driver. Kubernetes cgroup driver was set to systems but docker was set to systemd. 
+So I created /etc/docker/daemon.json and added below:
+
+{
+    "exec-opts": ["native.cgroupdriver=systemd"]
+}
+
+Then
+
+ sudo systemctl daemon-reload
+ sudo systemctl restart docker
+ sudo systemctl restart kubelet
+Run kubeadm init or kubeadm join again.
 
 -----------
 Master Node
