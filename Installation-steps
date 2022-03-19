@@ -71,11 +71,16 @@ Then
  sudo systemctl daemon-reload
  sudo systemctl restart docker
  sudo systemctl restart kubelet
-Run kubeadm init or kubeadm join again.
+Run kubeadm init or kubeadm join again with --ignore-preflight-errors=all at the end
 
 -----------
 Master Node
 -----------
 20) kubectl get nodes
+
+If your nodes label doesn't have any name and simply as <none>
+
+kubectl label nodes <Node-Name> kubernetes.io/role=<label-you-want-to-give>
+kubectl label --overwrite nodes <Node-Name> kubernetes.io/role=<label-you-want-to-give>
 
 ----------------------------------END--------------------------------
