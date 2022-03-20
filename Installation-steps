@@ -78,9 +78,15 @@ Master Node
 -----------
 20) kubectl get nodes
 
-If your nodes label doesn't have any name and simply as <none>
+Output:
+NAME                     STATUS   ROLES                  AGE     VERSION
+kubernetes-master-node   Ready    control-plane,master   7d21h   v1.23.4
+worker-node-1            Ready    worker-node-1          26h     v1.23.5
+worker-node-2            Ready    worker-node-2          26h     v1.23.5
 
-kubectl label nodes <Node-Name> kubernetes.io/role=<label-you-want-to-give>
-kubectl label --overwrite nodes <Node-Name> kubernetes.io/role=<label-you-want-to-give>
+If your nodes label doesn't have any role-name and simply as <none>
+
+kubectl label nodes <Node-Name> kubernetes.io/role=<Role/label-you-want-to-give>
+kubectl label --overwrite nodes <Node-Name> kubernetes.io/role=<Role/label-you-want-to-give>
 
 ----------------------------------END--------------------------------
