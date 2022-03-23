@@ -1,0 +1,75 @@
+kubectl commands :
+----------------
+1) kubectl  [View kubectl syntax]
+2) kubectl version
+3) kubectl version -o json  [ Version details in Json format ]
+4) kubectl version -o yaml  [ Version details in Yaml format ]
+5) kubectl api-resources  [ this will list all the k8s object/resources]
+6) kubectl cluster-info [ Provide K8S cluster info and status]
+7) kubectl get nodes -o wide [List the node details]
+8) kubectl describe node <node_name> [ View details of node ]
+
+POD
+---
+9) kubectl get pods -n kube-system [K8S Master components running as POD in kube-system namespace]
+10) kubectl run testpod --image=nginx   [ Create a POD ]
+11) kubectl get pods    [ List the POD details ]
+12) kubectl get pods -o wide [ List additional details of POD ]
+13) kubectl describe pods testpod
+14) kubectl logs testpod
+15) kubectl edit pod testpod  [ To edit the values . Only certain values can be edited]
+16) kubectl get pods testpod -o yaml [ To view the yaml format ]
+17) kubectl get pods testpod -o yaml > pod.yaml [ To redirect the yaml output to a file]
+
+Service
+-------
+18) kubectl expose pod testpod --type=NodePort --port=80 --target-Port=80 [Expose the pod externally]
+19) kubectl get service -o wide [List service details]
+20) kubectl describe service testpod [Details of service]
+21) kubectl edit service testpod [To edit port values] 
+22) kubectl get service testpod -o yaml > service.yaml [To redirect the yaml output to a file]
+
+    **To view the application , Launch a browser , http://[master-external-ip]:[nodePort] ]
+
+Deployment
+----------
+23) kubectl create deployment testdeploy --image=jboss/wildfly [To create deployment.This creates a     POD,deployment and replicaset objects]
+24) kubectl get deployment -o wide[ List the deployment details ]
+25) kubectl get pods -o wide [List pod created by deployment command]
+26) kubectl get replicaset -o wide [List replicaset created by deployment command]
+27) kubectl get deployment -o yaml > deployment.yaml [To redirect the yaml output to a file]
+28) kubectl get replicaset -o yaml > rs.yaml [To redirect the yaml output to a file]
+    
+Service
+-------
+29) kubectl expose deployment testdeploy --type=NodePort --port=8080 --target-Port=8080
+30) kubectl get service -o wide [List service details]
+31) kubectl describe service testdeploy [Details of service]
+32) kubectl edit service testdeploy [To edit port values] 
+33) kubectl get service testdeploy-o yaml > service.yaml [To redirect the yaml output to a file]
+
+34) kubectl exec -it podname /bin/sh  [ To enter inside pod to view the details ]
+    **To view the application , Launch a browser , http://[master-external-ip]:[nodePort] ]
+
+
+api-resources & explain
+-----------------------
+35) kubectl api-resources
+36) kubectl explain pod
+37) kubectl explain deployment
+38) kubectl explain service
+
+Labels:
+-------
+
+40) kubectl get pods --show-labels
+41) kubectl get pods -l color=blue
+
+dry run:
+-------
+kubectl run abc --image=httpd --dry-run=server -o yaml > abc.yaml
+vi abc.yaml   [# understand the details]
+kubectl run abc --image=httpd --dry-run=client -o yaml > xyz.yaml
+vi xyz.yaml
+
+=========
