@@ -1,0 +1,123 @@
+#To know the kubectl installed version
+kubectl version
+kubectl version -o wide
+kubectl version -o yaml
+
+#To list all the k8s object/resources
+kubectl api-resources
+
+#To know the cluster info
+kubectl cluster-info
+kubectl cluster-info dump
+=================================================================
+#NODE#
+
+#To get the details of all nodes
+kubectl get nodes --help
+kubectl get nodes
+kubectl get nodes -o wide
+kubectl get nodes -o yaml
+kubectl get nodes -o json
+
+#To get the details of a particular node
+kubectl describe node --help
+kubectl describe node <NODE-NAME>
+
+================================================================
+#POD#
+
+#To run a pod
+kubectl run <POD-NAME> --image=<IMAGE-NAME-FROM-DCOKERHUB>
+kubectl run myweb --image=httpd:1.0
+
+#To edit a pod [Only certain values can be edited]
+kubectl edit pod <POD-NAME>
+
+#To execute into a particular pod's shell
+kubectl exec -it <POD-NAME> /bin/sh
+kubectl exec -it <POD-NAME> /bin/bash
+
+#To get the details of all pods
+kubectl get pods --help
+kubectl get pods
+kubectl get pods -o wide
+kubectl get pods -o yaml
+kubectl get pods -o json
+
+#To get the details of a particular pod
+kubectl describe pod --help
+kubectl describe pod <POD-NAME>
+
+#To explain a pod
+kubectl explain pod
+
+#To see logs of a pod
+kubectl logs <POD-NAME>
+kubectl logs -f <POD-NAME>
+
+========================================================================
+#DEPLOYMENT#
+
+#To create a deployment
+kubectl create deployment <DEPLOYMENT-NAME> --image=<IMAGE-NAME-FROM-DCOKERHUB>
+
+#To edit a deployment [Like changing the replicaset]
+kubectl edit deployment <DEPLOYMENT-NAME>
+
+#To get the details of a deployment
+kubectl get deployment -o wide
+kubectl get deployment -o yaml
+kubectl get deployment -o yaml > deployment.yaml
+kubectl get deployment -o json
+kubectl get deployment -o json > deployment.json
+kubectl explain deployment
+
+#To get the details of a particular deployment
+kubectl get deployment <DEPLOYMENT-NAME>
+kubectl get deployment <DEPLOYMENT-NAME> -o wide
+kubectl get deployment <DEPLOYMENT-NAME> -o yaml
+kubectl get deployment <DEPLOYMENT-NAME> -o yaml > deployment.yaml
+kubectl get deployment <DEPLOYMENT-NAME> -o json 
+kubectl get deployment <DEPLOYMENT-NAME> -o json > deployment.json
+
+#To get the details of replicaset created by the deployment
+kubectl get replicaset -o wide
+kubectl get replicaset -o yaml
+kubectl get replicaset -o yaml > rs.yaml
+kubectl get replicaset -o json > rs.yaml
+
+=================================================================
+#SERVICE#
+
+#To expose a pod and to create service
+kubectl expose pod <POD-NAME> --type=NodePort --port=80 --target-port=80
+--type=NordPort
+--type=ClusteIP
+--type=LoadBalancer
+#To expose a deployment and to create service
+kubectl expose deployment <DEPLOYMENT-NAME> --type=NodePort --port=80 --target-port=80
+--type=NordPort
+--type=ClusteIP
+--type=LoadBalancer
+
+#To edit a service [to edit port values]
+kubectl edit service <SERVICE-NAME>
+
+#To get the details of all service
+kubectl get services --help
+kubectl get services
+kubectl get services -o wide
+kubectl get services -o yaml
+kubectl get services -o yaml > service.yaml
+kubectl get services -o json
+kubectl get services -o json > service.json
+
+#To get the details of a particular service
+kubectl get service <SERVICE-NAME>
+kubectl get service <SERVICE-NAME> -o wide
+kubectl get service <SERVICE-NAME> -o yaml
+kubectl get service <SERVICE-NAME> -o yaml > service.yaml
+kubectl get service <SERVICE-NAME> -o json 
+kubectl get service <SERVICE-NAME> -o json > service.json
+
+kubectl explain service
