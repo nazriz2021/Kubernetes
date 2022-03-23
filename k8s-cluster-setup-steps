@@ -1,0 +1,103 @@
+########################
+K8S Master & Worker node setup
+########################
+
+Step 1: Open GCP console
+Step 2: Create a VM with 
+            Name: k8s master
+            Machine type: e2-medium
+            VCPU: 2
+            OS: Ubuntu 20.08 LTS
+            Allow http and https
+            
+Step3: Open the created VM and create two similar VMs names as worker node1 and worker node 2
+
+--------------------
+MASTER NODE STEPS
+--------------------
+1) sudo apt update
+2) sudo apt install docker.io -y
+3) sudo docker version
+4) sudo systemctl enable docker
+5) sudo apt-get install -y apt-transport-https ca-certificates curl
+6) sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+7) echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+8) sudo apt-get update
+9) sudo apt-get install -y kubelet kubeadm kubectl
+    #If you fire -> sudo kubeadm init - Error would come as the native cgroupdriver is cgroupfs not systemd
+10) sudo -i
+11) Create a file as below and save it
+        vi /etc/docker/daemon.json
+    #press i and paste the below text
+        {
+            "exec-opts": ["native.cgroupdriver=systemd"]
+        }
+    #Once done, press esc key and type :wq! and Enter
+12) cat /etc/docker/daemon.json
+13) type as 'exit'
+14) sudo systemctl daemon-reload
+15) sudo systemctl restart docker
+16) sudo systemctl restart kubelet
+17) sudo kubeadm init --ignore-preflight-errors=all
+18) mkdir -p $HOME/.kube
+19) sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+20) sudo chown $(id -u):$(id -g) $HOME/.kube/config
+21) kubectl get nodes
+22) kubectl get pods --all-namespaces 
+    [In the output of above command, the first two coreDns pods will be in pending. Coredns -- > It is a dns server which can serve as a K8s cluster DNS. 
+    To make it up and running we should create a pod network (pod network is use for pod-to-pod communication. 
+    We have to use 3rd party tool. This is decided by architect)]
+23) kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+24) kubectl get pods --all-namespaces
+    [Now the coredns would be running]
+25) kubectl get nodes
+    [Now the status of Master-node should be ready]
+
+---------------------
+WORKER NODE STEPS
+---------------------
+#On worker Node#
+1) sudo apt update
+2) sudo apt install docker.io -y
+3) sudo docker version
+4) sudo systemctl enable docker
+5) sudo apt-get install -y apt-transport-https ca-certificates curl
+6) sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+7) echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+8) sudo apt-get update
+9) sudo apt-get install -y kubelet kubeadm kubectl
+10) sudo -i
+11) Create a file as below and save it
+            vi /etc/docker/daemon.json
+    #press i and paste the below text
+            {
+                "exec-opts": ["native.cgroupdriver=systemd"]
+            }
+    #Once done, press esc key and type :wq! and Enter
+12) cat /etc/docker/daemon.json
+13) type as 'exit'
+14) sudo systemctl daemon-reload
+15) sudo systemctl restart docker
+16) sudo systemctl restart kubelet
+
+#In Master Node#
+17) Fire the command in Master Node -> sudo kubeadm token create --print-join-command and copy the output
+
+#In worker Node#
+18) Fire the command --> sudo <OUTPUT-COPIED-FROM-MASTER-NODE> --ignore-preflight-errors=all
+
+#In Master Node#
+19) Fire the command and check if the worker node added --> kubectl get nodes
+
+    Output:
+    NAME                     STATUS   ROLES                  AGE     VERSION
+    kubernetes-master-node   Ready    control-plane,master   7d21h   v1.23.4
+    worker-node-1            Ready    worker-node-1          26h     v1.23.5
+    worker-node-2            Ready    worker-node-2          26h     v1.23.5
+
+    #If your worker nodes doesn't have any roles mentioned but simply as <none>
+20) kubectl label nodes <Node-Name> kubernetes.io/role=<Role/label-you-want-to-give>
+    #If your worker nodes has some names but you want it to change or overwrite
+21) kubectl label --overwrite nodes <Node-Name> kubernetes.io/role=<Role/label-you-want-to-give>
+
+----------------------------------END--------------------------------
