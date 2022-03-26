@@ -5,10 +5,14 @@ K8S Master & Worker node setup
 Step 1: Open GCP console
 Step 2: Create a VM with 
             Name: k8s master
-            Machine type: e2-medium
-            VCPU: 2
-            OS: Ubuntu 20.08 LTS
-            Allow http and https
+            Machine type: 
+                        Series: e2
+                        Machine type: e2-medium (2 vCPU, 4 GB memory)
+            Boot Disk:
+                        Operating System: Ubuntu
+                        Version: Ubuntu 20.04 LTS
+            Firewall:
+            checkmark - Allow HTTP traffic and Allow HTTPS traffic
             
 Step3: Open the created VM and create two similar VMs names as worker node1 and worker node 2
 
