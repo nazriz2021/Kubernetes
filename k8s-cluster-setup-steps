@@ -100,7 +100,7 @@ WORKER NODE STEPS
     worker-node-2            Ready    worker-node-2          26h     v1.23.5
 
     #If your worker nodes doesn't have any roles mentioned but simply as <none>
-20) kubectl label nodes <Node-Name> kubernetes.io/role=<Role/label-you-want-to-give>
+20) kubectl label nodes <Node-Name> kubernetes.io/role=role [kubectl label nodes worker-1 kubernetes.io/role=worker-1]
     #If your worker nodes has some names but you want it to change or overwrite
 21) kubectl label --overwrite nodes <Node-Name> kubernetes.io/role=<Role/label-you-want-to-give>
 
