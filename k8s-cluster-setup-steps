@@ -24,14 +24,14 @@ MASTER NODE STEPS
 3) sudo docker version
 4) sudo systemctl enable docker
 5) sudo apt-get install -y apt-transport-https ca-certificates curl
-6) sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+6) sudo -i
+curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg| gpg -o /usr/share/keyrings/kubernetes-archive-keyring.gpg --dearmor
 7) echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 8) sudo apt-get update
-9) sudo apt-get install -y kubelet kubeadm kubectl [if not working, give below]
-            sudo -i
-            curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg| gpg -o /usr/share/keyrings/kubernetes-archive-keyring.gpg --dearmor
+9) sudo apt-get install -y kubelet kubeadm kubectl
+            
     #If you fire -> sudo kubeadm init - Error would come as the native cgroupdriver is cgroupfs not systemd
-10) sudo -i
+10) sudo apt-get install -y kubelet kubeadm kubectl
 11) Create a file as below and save it
         vi /etc/docker/daemon.json
     #press i and paste the below text
@@ -68,13 +68,11 @@ WORKER NODE STEPS
 3) sudo docker version
 4) sudo systemctl enable docker
 5) sudo apt-get install -y apt-transport-https ca-certificates curl
-6) sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+6) sudo -i 
+curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg| gpg -o /usr/share/keyrings/kubernetes-archive-keyring.gpg --dearmor
 7) echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 8) sudo apt-get update
 9) sudo apt-get install -y kubelet kubeadm kubectl[if not working, give below]
-            sudo -i
-            curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg| gpg -o /usr/share/keyrings/kubernetes-archive-keyring.gpg --dearmor
-10) sudo -i
 11) Create a file as below and save it
             vi /etc/docker/daemon.json
     #press i and paste the below text
